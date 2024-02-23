@@ -1,11 +1,12 @@
 package fr.ecole3il.buvette;
 
 public enum Boisson {
-    BIERE("leffe", [Ingredient.BIERE]),
-    CIDRE("gorvello", [Ingredient.CIDRE]),
-    VRAI_CIDRE("fossey", [Ingredient.VRAI_CIDRE]),
-    GT("gt", [Ingredient.GIN, Ingredient.TONIC, Ingredient.JET_27]),
-    SPECIAL_BACARDI("special bacardi", [Ingredient.GIN, Ingredient.GRENADINE, Ingredient.JUS_DE_CITRON, Ingredient.RHUM]);
+    BIERE("leffe", new Ingredient[] {Ingredient.BIERE}),
+    CIDRE("gorvello", new Ingredient[]{Ingredient.CIDRE}),
+    VRAI_CIDRE("fossey", new Ingredient[] {Ingredient.VRAI_CIDRE}),
+    GT("gt", new Ingredient[] {Ingredient.GIN, Ingredient.TONIC, Ingredient.JET_27}),
+    SPECIAL_BACARDI("special bacardi", new Ingredient[]{Ingredient.GIN, Ingredient.GRENADINE,
+                                                            Ingredient.JUS_DE_CITRON, Ingredient.RHUM});
 
     private String nom;
     private int prix;
@@ -14,9 +15,12 @@ public enum Boisson {
     Boisson(String nom, Ingredient... ingredients) {
         this.nom = nom;
         this.prix = 0;
+        int prixIngredient;
         if (ingredients.length != 0) {
             for (Ingredient ingredient : ingredients) {
-                this.prix += ingredient.getUnite();
+                prixIngredient = ingredient.getUnite();
+                this.prix += (nom.equals("special bacardi") && ingredient.equals(Ingredient.GIN) ?
+                        prixIngredient / 2 : prixIngredient);
             }
         }
     }
@@ -29,7 +33,7 @@ public enum Boisson {
         return prix;
     }
 
-    public boolean discount() {
+    public boolean reduction() {
         switch (this) {
             case BIERE:
             case CIDRE:

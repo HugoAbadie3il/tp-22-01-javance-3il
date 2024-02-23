@@ -16,8 +16,8 @@ public class Buvette {
             throw new RuntimeException("Trop de boissons, maximum 2");
         }
         int prix = boisson.getPrix() * quantite;
-        if (client.isEtudiant() && boisson.discount()) {
-            prix -= prix/10;
+        if (client.isEtudiant() && boisson.reduction()) {
+            prix -= prix * 0.1;
         }
         return prix;
     }
